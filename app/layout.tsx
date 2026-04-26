@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -38,6 +39,16 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
+        <header className="mb-8 border-b py-4">
+          <nav className="mx-auto flex max-w-4xl gap-4 px-4">
+            <Link href="/" className="font-semibold">
+              Home
+            </Link>
+            <Link href="/search" className="text-gray-600 hover:text-gray-900">
+              Search
+            </Link>
+          </nav>
+        </header>
         {children}
         <footer className="mx-auto mt-8 max-w-4xl border-t px-4 py-4 text-gray-500 text-sm">
           © 2026 Mikes Swag Store
