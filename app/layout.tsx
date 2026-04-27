@@ -40,7 +40,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <header className="mb-8 border-b py-4">
-          <nav className="mx-auto flex max-w-4xl gap-4 px-4">
+          <nav className="mx-auto flex max-w-6xl gap-4 px-4 sm:px-6 lg:px-8">
             <Link href="/" className="font-semibold">
               Home
             </Link>
@@ -49,9 +49,13 @@ export default function RootLayout({
             </Link>
           </nav>
         </header>
-        {children}
-        <footer className="mx-auto mt-8 max-w-4xl border-t px-4 py-4 text-gray-500 text-sm">
-          © 2026 Mikes Swag Store
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6 lg:px-8">
+          {children}
+        </main>
+        <footer className="border-t mt-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500 text-sm">
+            © 2026 Vercel Swag Store
+          </div>
         </footer>
       </body>
     </html>
