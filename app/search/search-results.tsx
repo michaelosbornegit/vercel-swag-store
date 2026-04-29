@@ -1,9 +1,14 @@
 import { ProductCard } from "@/components/product-card";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { searchProducts } from "@/lib/server/products-dto";
 
-export async function SearchResults({ query }: { query?: string }) {
+export async function SearchResults({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string }>;
+}) {
+  const { query } = await searchParams;
   const products = await searchProducts({ query });
 
   if (products.length === 0) {
