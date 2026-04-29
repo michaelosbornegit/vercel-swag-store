@@ -9,6 +9,10 @@ import { ProductSummaryDTO } from "@/components/product-card";
 import { cacheLife, cacheTag } from "next/cache";
 
 export async function getFeaturedProducts(): Promise<ProductSummaryDTO[]> {
+  "use cache";
+  cacheTag("products", "featured-products");
+  cacheLife("hours");
+
   const raw = await fetchFeaturedProductsRaw();
   return raw.map(toProductSummaryDTO);
 }
