@@ -27,7 +27,7 @@ export function ProductsGrid({ products }: { products: ProductSummaryDTO[] }) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
@@ -37,7 +37,7 @@ export function ProductsGrid({ products }: { products: ProductSummaryDTO[] }) {
 
 export function SearchResultsSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
       {Array.from({ length: 5 }).map((_, i) => (
         <Card key={i} className="overflow-hidden p-0">
           <CardHeader className="p-0">

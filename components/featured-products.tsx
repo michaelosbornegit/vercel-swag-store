@@ -7,7 +7,7 @@ export async function FeaturedProducts() {
   return (
     <section className="space-y-4">
       <h2 className="text-2xl font-semibold">Featured</h2>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
         {products.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}
