@@ -1,9 +1,23 @@
-import { getFeaturedProducts, searchProducts } from "@/lib/server/products-dto";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
+import { ProductDetails } from "@/components/product-details";
+import {
+  getFeaturedProducts,
+  getProductBySlug,
+  searchProducts,
+} from "@/lib/server/products-dto";
+
+import {
+  StockSection,
+  StockSectionSkeleton,
+} from "./_components/stock-section";
 
 export async function generateStaticParams() {
   const [featured, defaults] = await Promise.all([
     getFeaturedProducts(),
-    searchProducts({}), // default state - returns 20 products which are displayed on the search page
+    searchProducts({}),
   ]);
 
   const slugs = new Set([
@@ -14,10 +28,41 @@ export async function generateStaticParams() {
   return Array.from(slugs).map((slug) => ({ slug }));
 }
 
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await props.params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    return { title: "Product not found" };
+  }
+
+  return {
+    title: product.name,
+    description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: product.images.slice(0, 1),
+      type: "website",
+    },
+  };
+}
+
 export default async function ProductDetailPage(props: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await props.params;
+  const product = await getProductBySlug(slug);
 
-  return <div>Product: {slug}</div>;
+  if (!product) notFound();
+
+  return (
+    <ProductDetails product={product}>
+      <Suspense fallback={<StockSectionSkeleton />}>
+        <StockSection productId={product.id} />
+      </Suspense>
+    </ProductDetails>
+  );
 }

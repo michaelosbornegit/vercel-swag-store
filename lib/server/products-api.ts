@@ -1,6 +1,6 @@
 import "server-only";
 
-import { ApiResponse, authenticatedFetch } from "../api";
+import { ApiError, authenticatedFetch } from "../api";
 
 export type RawProduct = {
   id: string;
@@ -15,6 +15,37 @@ export type RawProduct = {
   slug?: string;
   tags?: string[];
 };
+
+export type RawStock = {
+  productId: string;
+  stock: number;
+  inStock: boolean;
+  lowStock: boolean;
+};
+
+export async function fetchProductStockRaw(
+  id: string,
+): Promise<RawStock | null> {
+  try {
+    const { data } = await authenticatedFetch<RawStock>(`products/${id}/stock`);
+    return data;
+  } catch (err) {
+    if (err instanceof ApiError && err.code === "NOT_FOUND") return null;
+    throw err;
+  }
+}
+
+export async function fetchProductBySlugRaw(
+  slug: string,
+): Promise<RawProduct | null> {
+  try {
+    const { data } = await authenticatedFetch<RawProduct>(`products/${slug}`);
+    return data;
+  } catch (err) {
+    if (err instanceof ApiError && err.code === "NOT_FOUND") return null;
+    throw err;
+  }
+}
 
 export async function fetchFeaturedProductsRaw(): Promise<RawProduct[]> {
   // TODO add pagination support through metadata in the response
