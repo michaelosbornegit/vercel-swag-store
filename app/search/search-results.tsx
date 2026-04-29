@@ -1,6 +1,7 @@
 import { ProductCard } from "@/components/product-card";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { ProductSummaryDTO } from "@/components/product-card";
 import { searchProducts } from "@/lib/server/products-dto";
 
 export async function SearchResults({
@@ -10,7 +11,10 @@ export async function SearchResults({
 }) {
   const { query } = await searchParams;
   const products = await searchProducts({ query });
+  return <ProductsGrid products={products} />;
+}
 
+export function ProductsGrid({ products }: { products: ProductSummaryDTO[] }) {
   if (products.length === 0) {
     return (
       <p
