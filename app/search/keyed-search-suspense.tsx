@@ -14,9 +14,14 @@ export function KeyedSearchSuspense({
 }) {
   const params = useSearchParams();
   const query = params.get("query") ?? "";
+  const category = params.get("category") ?? "";
+  const isFiltering = Boolean(query || category);
 
   return (
-    <Suspense key={query} fallback={query ? queryFallback : defaultFallback}>
+    <Suspense
+      key={`${query}|${category}`}
+      fallback={isFiltering ? queryFallback : defaultFallback}
+    >
       {children}
     </Suspense>
   );

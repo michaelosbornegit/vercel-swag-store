@@ -1,3 +1,4 @@
+import { getCategories } from "@/lib/server/categories-dto";
 import { searchProducts } from "@/lib/server/products-dto";
 
 import { KeyedSearchSuspense } from "./keyed-search-suspense";
@@ -9,15 +10,17 @@ import {
 } from "./search-results";
 
 export default async function SearchPage(props: {
-  searchParams: Promise<{ query?: string }>;
+  searchParams: Promise<{ query?: string; category?: string }>;
 }) {
-  // cached, resolves at build and shows 20 products for default state
-  const defaultProducts = await searchProducts({});
+  const [categories, defaultProducts] = await Promise.all([
+    getCategories(),
+    searchProducts({}),
+  ]);
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Search</h1>
-      <SearchForm />
+      <SearchForm categories={categories} />
       <KeyedSearchSuspense
         defaultFallback={<ProductsGrid products={defaultProducts} />}
         queryFallback={<SearchResultsSkeleton />}

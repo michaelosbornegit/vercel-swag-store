@@ -7,21 +7,18 @@ import { searchProducts } from "@/lib/server/products-dto";
 export async function SearchResults({
   searchParams,
 }: {
-  searchParams: Promise<{ query?: string }>;
+  searchParams: Promise<{ query?: string; category?: string }>;
 }) {
-  const { query } = await searchParams;
-  const products = await searchProducts({ query });
+  const { query, category } = await searchParams;
+  const products = await searchProducts({ query, category });
   return <ProductsGrid products={products} />;
 }
 
 export function ProductsGrid({ products }: { products: ProductSummaryDTO[] }) {
   if (products.length === 0) {
     return (
-      <p
-        className="rounded-lg border bg-muted/30 p-8 text-center
-  text-muted-foreground"
-      >
-        No products match your search. Try a different query.
+      <p className="rounded-lg border bg-muted/30 p-8 text-center text-muted-foreground">
+        No products match your search. Try a different query or category.
       </p>
     );
   }
