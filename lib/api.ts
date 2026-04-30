@@ -33,21 +33,39 @@ export type ApiResponse<T> =
   | { success: true; data: T; meta?: ApiMetadata }
   | { success: false; error: ApiErrorBody };
 
+type AuthFetchOptions = {
+  method?: "GET" | "POST" | "PATCH" | "DELETE";
+  searchParams?: Record<string, string>;
+  headers?: Record<string, string>;
+  body?: unknown;
+};
+
 export async function authenticatedFetch<T>(
   path: string,
-  searchParams?: Record<string, string>,
+  options: AuthFetchOptions = {},
 ) {
   const url = new URL(path, API_BASE_URL);
-  if (searchParams) {
-    Object.entries(searchParams).forEach(([key, value]) => {
+  if (options.searchParams) {
+    for (const [key, value] of Object.entries(options.searchParams)) {
       url.searchParams.append(key, value);
-    });
+    }
+  }
+
+  const headers: Record<string, string> = {
+    "x-vercel-protection-bypass": process.env.VERCEL_PROTECTION_BYPASS ?? "",
+    ...options.headers,
+  };
+
+  let requestBody: string | undefined;
+  if (options.body !== undefined) {
+    headers["Content-Type"] = "application/json";
+    requestBody = JSON.stringify(options.body);
   }
 
   const response = await fetch(url.toString(), {
-    headers: {
-      "x-vercel-protection-bypass": process.env.VERCEL_PROTECTION_BYPASS || "",
-    },
+    method: options.method ?? "GET",
+    headers,
+    body: requestBody,
   });
 
   const body = (await response.json()) as ApiResponse<T>;

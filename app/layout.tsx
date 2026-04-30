@@ -4,6 +4,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
+import { CartButton } from "@/components/cart/cart-button";
+import { CartProvider } from "@/components/cart/cart-provider";
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
@@ -61,24 +64,32 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <header className="mb-8 border-b py-4">
-          <nav className="mx-auto flex max-w-6xl gap-4 px-4 sm:px-6 lg:px-8">
-            <Link href="/" className="font-semibold">
-              Home
-            </Link>
-            <Link href="/search" className="text-gray-600 hover:text-gray-900">
-              Search
-            </Link>
-          </nav>
-        </header>
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6 lg:px-8">
-          {children}
-        </main>
-        <footer className="border-t mt-8">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500 text-sm">
-            © 2026 Vercel Swag Store
-          </div>
-        </footer>
+        <CartProvider>
+          <header className="mb-8 border-b py-4">
+            <nav className="mx-auto flex max-w-6xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+              <Link href="/" className="font-semibold">
+                Home
+              </Link>
+              <Link
+                href="/search"
+                className="text-gray-600 hover:text-gray-900"
+              >
+                Search
+              </Link>
+              <div className="ml-auto">
+                <CartButton />
+              </div>
+            </nav>
+          </header>
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6 lg:px-8">
+            {children}
+          </main>
+          <footer className="border-t mt-8">
+            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500 text-sm">
+              © 2026 Vercel Swag Store
+            </div>
+          </footer>
+        </CartProvider>
       </body>
     </html>
   );

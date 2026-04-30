@@ -1,11 +1,12 @@
+import { type CartItemInfo } from "@/components/cart/cart-provider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getProductStock } from "@/lib/server/products-dto";
 
 import { AddToCart } from "./add-to-cart";
 
-export async function StockSection({ productId }: { productId: string }) {
-  const stock = await getProductStock(productId);
-  return <AddToCart stock={stock} />;
+export async function StockSection({ product }: { product: CartItemInfo }) {
+  const stock = await getProductStock(product.id);
+  return <AddToCart product={product} stock={stock} />;
 }
 
 export function StockSectionSkeleton() {

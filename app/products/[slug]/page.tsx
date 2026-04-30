@@ -61,7 +61,15 @@ export default async function ProductDetailPage(props: {
   return (
     <ProductDetails product={product}>
       <Suspense fallback={<StockSectionSkeleton />}>
-        <StockSection productId={product.id} />
+        <StockSection
+          product={{
+            id: product.id,
+            slug: product.slug,
+            name: product.name,
+            image: product.images[0] ?? "",
+            priceCents: product.price,
+          }}
+        />
       </Suspense>
     </ProductDetails>
   );

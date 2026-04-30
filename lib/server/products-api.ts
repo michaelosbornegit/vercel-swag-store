@@ -48,9 +48,8 @@ export async function fetchProductBySlugRaw(
 }
 
 export async function fetchFeaturedProductsRaw(): Promise<RawProduct[]> {
-  // TODO add pagination support through metadata in the response
   const response = await authenticatedFetch<RawProduct[]>("products", {
-    featured: "true",
+    searchParams: { featured: "true" },
   });
   return response.data;
 }
@@ -67,9 +66,8 @@ export async function fetchProductsRaw(params: {
   if (params.category) searchParams.category = params.category;
   if (params.limit) searchParams.limit = params.limit;
 
-  const response = await authenticatedFetch<RawProduct[]>(
-    "products",
+  const response = await authenticatedFetch<RawProduct[]>("products", {
     searchParams,
-  );
+  });
   return response.data;
 }

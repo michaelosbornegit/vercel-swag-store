@@ -2,12 +2,20 @@
 
 import { useState } from "react";
 
+import { useCart, type CartItemInfo } from "@/components/cart/cart-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function AddToCart({ stock }: { stock: number }) {
+export function AddToCart({
+  product,
+  stock,
+}: {
+  product: CartItemInfo;
+  stock: number;
+}) {
   const isOutOfStock = stock === 0;
   const [quantity, setQuantity] = useState(1);
+  const { addItem } = useCart();
 
   return (
     <div className="space-y-3">
@@ -34,7 +42,7 @@ export function AddToCart({ stock }: { stock: number }) {
           disabled={isOutOfStock}
           className="flex-1"
           onClick={() => {
-            // TODO make me work later
+            addItem(product, quantity);
           }}
         >
           Add to Cart
