@@ -135,15 +135,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const stored = sessionStorage.getItem(TOKEN_KEY);
     if (!stored) return;
 
-    setToken(stored);
     getCartAction(stored)
       .then((dto) => {
         if (!dto) {
           // Token is stale — drop it.
           sessionStorage.removeItem(TOKEN_KEY);
-          setToken(null);
           return;
         }
+        setToken(stored);
         setCart({
           items: dto.items,
           totalQuantity: dto.totalQuantity,
@@ -153,7 +152,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       })
       .catch(() => {
         sessionStorage.removeItem(TOKEN_KEY);
-        setToken(null);
       });
   }, []);
 

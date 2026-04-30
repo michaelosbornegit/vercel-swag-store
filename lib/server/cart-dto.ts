@@ -20,13 +20,6 @@ export type CartDTO = {
   currency: string;
 };
 
-export const EMPTY_CART: Omit<CartDTO, "token"> = {
-  items: [],
-  totalQuantity: 0,
-  subtotalCents: 0,
-  currency: "USD",
-};
-
 export function toCartDTO(raw: RawCart): CartDTO {
   return {
     token: raw.token,
