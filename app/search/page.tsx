@@ -1,9 +1,12 @@
-import { Suspense } from "react";
-
 import { searchProducts } from "@/lib/server/products-dto";
 
+import { KeyedSearchSuspense } from "./keyed-search-suspense";
 import { SearchForm } from "./search-form";
-import { ProductsGrid, SearchResults } from "./search-results";
+import {
+  ProductsGrid,
+  SearchResults,
+  SearchResultsSkeleton,
+} from "./search-results";
 
 export default async function SearchPage(props: {
   searchParams: Promise<{ query?: string }>;
@@ -15,9 +18,12 @@ export default async function SearchPage(props: {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Search</h1>
       <SearchForm />
-      <Suspense fallback={<ProductsGrid products={defaultProducts} />}>
+      <KeyedSearchSuspense
+        defaultFallback={<ProductsGrid products={defaultProducts} />}
+        queryFallback={<SearchResultsSkeleton />}
+      >
         <SearchResults searchParams={props.searchParams} />
-      </Suspense>
+      </KeyedSearchSuspense>
     </div>
   );
 }
